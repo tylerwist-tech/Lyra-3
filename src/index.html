@@ -8,246 +8,296 @@
 </head>
 <body>
 
-<div id="cursor-dot" class="cursor-dot"></div>
-<div id="cursor-outline" class="cursor-outline"></div>
-
-<div class="desktop-bg" id="desktop-bg-layer"></div>
-
-<div class="login-wrapper glass-panel" id="login-screen">
+    <div id="desktop-bg-layer" class="desktop-bg"></div>
     <div class="login-bg-glow"></div>
-    <div class="login-box glass-panel">
-        <div class="lyra-logo-container">
-            <div class="logo-ring"></div>
-            <div class="logo-letter">L</div>
+
+    <div id="cursor-dot" class="cursor-dot"></div>
+    <div id="cursor-outline" class="cursor-outline"></div>
+
+    <div id="login-screen" class="login-wrapper">
+        <div class="login-box glass-panel">
+            <div class="login-logo-badge">LYRA 3</div>
+            <div class="lyra-logo-container">
+                <div class="logo-ring"></div>
+                <div class="logo-letter">L</div>
+            </div>
+            <h2 class="welcome-text">Willkommen zurück</h2>
+            <input type="text" id="username" class="login-input glass-input" placeholder="Benutzername (admin)" autocomplete="off">
+            <input type="password" id="password" class="login-input glass-input" placeholder="Passwort (Brat...)">
+            <button class="login-btn" onclick="window.checkLogin()">Anmelden</button>
+            <div id="login-error" class="error-msg">Ungültige Anmeldedaten.</div>
         </div>
-        <div class="login-logo-badge glass-panel">Lyra 3</div>
-        <h2 class="welcome-text">Willkommen zurück</h2>
+    </div>
+
+    <div id="os-workspace" style="display: none; width: 100vw; height: 100vh; position: absolute; top:0; left:0;">
         
-        <input type="text" id="username" class="login-input glass-input" placeholder="Benutzername">
-        <input type="password" id="password" class="login-input glass-input" placeholder="Passwort">
-        <button class="login-btn" onclick="checkLogin()">Einloggen</button>
-        <div id="login-error" class="error-msg">Falscher Benutzername oder Passwort</div>
-    </div>
-</div>
+        <div class="top-bar glass-panel">
+            <div class="logo">✦ Lyra 3</div>
+            <div class="clock-badge" id="clock">00:00:00</div>
+        </div>
 
-<div id="os-workspace" style="display: none; width: 100vw; height: 100vh; position: relative;">
-    
-    <div class="top-bar glass-panel">
-        <span class="logo">Lyra 3</span>
-    </div>
-
-    <div class="desktop-area">
-        <div class="desktop-icon" onclick="toggleApp('terminal')">
-            <div class="icon-svg">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
-            </div>
-            <span>Terminal</span>
-        </div>
-        <div class="desktop-icon" onclick="toggleApp('calculator')">
-            <div class="icon-svg">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect><line x1="8" y1="6" x2="16" y2="6"></line><line x1="16" y1="14" x2="16" y2="18"></line><line x1="16" y1="10" x2="16" y2="10"></line><line x1="8" y1="14" x2="8" y2="14"></line><line x1="8" y1="10" x2="8" y2="10"></line><line x1="12" y1="14" x2="12" y2="14"></line><line x1="12" y1="10" x2="12" y2="10"></line></svg>
-            </div>
-            <span>Rechner</span>
-        </div>
-        <div class="desktop-icon" onclick="toggleApp('tictactoe')">
-            <div class="icon-svg">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><line x1="3" y1="8" x2="21" y2="8"></line><line x1="3" y1="16" x2="21" y2="16"></line><line x1="8" y1="3" x2="8" y2="21"></line><line x1="16" y1="3" x2="16" y2="21"></line></svg>
-            </div>
-            <span>TicTacToe</span>
-        </div>
-        <div class="desktop-icon" onclick="toggleApp('snake')">
-            <div class="icon-svg">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="30" height="30">
-                    <rect x="2" y="2" width="20" height="20" rx="4" ry="4"></rect>
-                    <path d="M7 15h4v-4h4v-4h2"></path>
-                    <circle cx="17" cy="7" r="1"></circle>
-                </svg>
-            </div>
-            <span>Snake</span>
-        </div>
-    </div>
-
-    <div class="dock">
-        <div class="dock-container">
-            <div class="app-tile" onclick="toggleApp('settings')" title="Einstellungen">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="24" height="24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-            </div>
-            <div class="app-tile" onclick="toggleApp('explorer')" title="Explorer">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="24" height="24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
-            </div>
-            <div class="app-tile" onclick="toggleApp('lynotes')" title="Notes">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="24" height="24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-            </div>
-            <div class="taskbar-divider"></div>
-            <div class="clock-badge" id="clock">00:00</div>
-        </div>
-    </div>
-
-    <div class="window glass-panel" id="settings" style="width: 380px; left: 100px; top: 100px;">
-        <div class="window-header">
-            <div class="controls"><div class="btn btn-close" onclick="closeApp('settings')"></div></div>
-            <div class="title">Systemsteuerung</div>
-        </div>
-        <div class="window-content settings-content">
-            <h3>Hintergrundfarben</h3>
-            <div class="color-grid">
-                <div class="color-btn" style="background: linear-gradient(-45deg, #090314, #120b2e);" onclick="changeBg('linear-gradient(-45deg, #090314, #120b2e)', '#818cf8', 'rgba(129, 140, 248, 0.45)')"></div>
-                <div class="color-btn" style="background: linear-gradient(-45deg, #18181b, #3f3f46);" onclick="changeBg('linear-gradient(-45deg, #18181b, #3f3f46)', '#a1a1aa', 'rgba(161, 161, 170, 0.45)')"></div>
-                <div class="color-btn" style="background: linear-gradient(-45deg, #0f172a, #1e3a8a);" onclick="changeBg('linear-gradient(-45deg, #0f172a, #1e3a8a)', '#60a5fa', 'rgba(96, 165, 250, 0.45)')"></div>
-                <div class="color-btn" style="background: linear-gradient(-45deg, #022c22, #047857);" onclick="changeBg('linear-gradient(-45deg, #022c22, #047857)', '#34d399', 'rgba(52, 211, 153, 0.45)')"></div>
-                <div class="color-btn" style="background: linear-gradient(-45deg, #2e1065, #6b21a8);" onclick="changeBg('linear-gradient(-45deg, #2e1065, #6b21a8)', '#c084fc', 'rgba(192, 132, 252, 0.45)')"></div>
-            </div>
-
-            <h3>Cursor Typ</h3>
-            <div class="ttt-mode-selector" style="margin-bottom: 25px;">
-                <button class="glass-btn active-mode" id="cursor-circle-btn" onclick="setCursorType('circle')">Kreis</button>
-                <button class="glass-btn" id="cursor-cross-btn" onclick="setCursorType('cross')">Kreuz</button>
-            </div>
-
-            <h3>Cursor Farbe</h3>
-            <div class="color-grid">
-                <div class="color-btn" style="background: #ffffff;" onclick="changeCursorColor('#ffffff')"></div>
-                <div class="color-btn" style="background: #94a3b8;" onclick="changeCursorColor('#94a3b8')"></div>
-                <div class="color-btn" style="background: #60a5fa;" onclick="changeCursorColor('#60a5fa')"></div>
-                <div class="color-btn" style="background: #34d399;" onclick="changeCursorColor('#34d399')"></div>
-                <div class="color-btn" style="background: #f472b6;" onclick="changeCursorColor('#f472b6')"></div>
-                <div class="color-btn" style="background: #c084fc;" onclick="changeCursorColor('#c084fc')"></div>
-            </div>
-        </div>
-        <div class="vision-handle"></div>
-    </div>
-
-    <div class="window glass-panel" id="terminal" style="width: 500px; height: 350px; left: 150px; top: 150px;">
-        <div class="window-header">
-            <div class="controls"><div class="btn btn-close" onclick="closeApp('terminal')"></div></div>
-            <div class="title">Terminal</div>
-        </div>
-        <div class="window-content" style="background: rgba(0,0,0,0.6);">
-            <div class="terminal-body" id="terminal-output" style="flex:1; overflow-y:auto; margin-bottom: 10px;">
-                LyraOS Core loaded.<br>Tippe 'help' für Befehle.
-            </div>
-            <div style="display: flex; gap: 10px; font-family: monospace;">
-                <span style="color: #fff; line-height: 20px;">lyra@admin:~$</span>
-                <input type="text" id="term-input" style="flex:1; background: transparent; border: none; color: #4ade80; outline: none; font-family: monospace; font-size: 16px;">
-            </div>
-        </div>
-        <div class="vision-handle"></div>
-    </div>
-
-    <div class="window glass-panel" id="lynotes" style="width: 600px; height: 450px; left: 200px; top: 100px;">
-        <div class="window-header">
-            <div class="controls"><div class="btn btn-close" onclick="closeApp('lynotes')"></div></div>
-            <div class="title">Notes</div>
-        </div>
-        <div class="window-content notes-layout">
-            <div class="notes-toolbar">
-                <input type="hidden" id="note-id">
-                <input type="text" id="note-title" class="note-title-input" placeholder="Titel der Notiz...">
-                <button class="note-save-btn" onclick="saveNote()">Speichern</button>
-                <button class="note-save-btn" style="background: rgba(255,255,255,0.1);" onclick="createNewNote()">Neu</button>
-            </div>
-            <textarea id="note-content" class="glass-input" placeholder="Schreibe deine Gedanken auf..."></textarea>
-        </div>
-        <div class="vision-handle"></div>
-    </div>
-
-    <div class="window glass-panel" id="explorer" style="width: 650px; height: 400px; left: 250px; top: 150px;">
-        <div class="window-header">
-            <div class="controls"><div class="btn btn-close" onclick="closeApp('explorer')"></div></div>
-            <div class="title">Explorer</div>
-        </div>
-        <div class="window-content explorer-layout" style="padding: 0;">
-            <div class="explorer-sidebar">
-                <div class="explorer-tab">Dokumente</div>
-                <div class="explorer-tab" style="margin-top: 15px; background: rgba(74, 222, 128, 0.15); color: #4ade80; cursor: none;" onclick="createNewNote(); openApp('lynotes');">+ Neu</div>
-            </div>
-            <div class="explorer-main" id="explorer-list">
+        <div class="desktop-area">
+            <div class="desktop-icon" onclick="window.openApp('lyexplorer')">
+                <div class="icon-svg">
+                    <svg viewBox="0 0 24 24" width="30" height="30" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
                 </div>
-        </div>
-        <div class="vision-handle"></div>
-    </div>
-
-    <div class="window glass-panel" id="calculator" style="width: 320px; left: 300px; top: 200px;">
-        <div class="window-header">
-            <div class="controls"><div class="btn btn-close" onclick="closeApp('calculator')"></div></div>
-            <div class="title">Rechner</div>
-        </div>
-        <div class="window-content calc-bg">
-            <div class="calc-display" id="calc-display">0</div>
-            <div class="calc-grid">
-                <button class="glass-btn calc-btn danger-btn" onclick="calcClear()">C</button>
-                <button class="glass-btn calc-btn special-btn" onclick="calcInput('(')">(</button>
-                <button class="glass-btn calc-btn special-btn" onclick="calcInput(')')">)</button>
-                <button class="glass-btn calc-btn special-btn" onclick="calcInput('/')">÷</button>
-                
-                <button class="glass-btn calc-btn" onclick="calcInput('7')">7</button>
-                <button class="glass-btn calc-btn" onclick="calcInput('8')">8</button>
-                <button class="glass-btn calc-btn" onclick="calcInput('9')">9</button>
-                <button class="glass-btn calc-btn special-btn" onclick="calcInput('*')">×</button>
-                
-                <button class="glass-btn calc-btn" onclick="calcInput('4')">4</button>
-                <button class="glass-btn calc-btn" onclick="calcInput('5')">5</button>
-                <button class="glass-btn calc-btn" onclick="calcInput('6')">6</button>
-                <button class="glass-btn calc-btn special-btn" onclick="calcInput('-')">-</button>
-                
-                <button class="glass-btn calc-btn" onclick="calcInput('1')">1</button>
-                <button class="glass-btn calc-btn" onclick="calcInput('2')">2</button>
-                <button class="glass-btn calc-btn" onclick="calcInput('3')">3</button>
-                <button class="glass-btn calc-btn special-btn" onclick="calcInput('+')">+</button>
-                
-                <button class="glass-btn calc-btn" style="grid-column: span 2;" onclick="calcInput('0')">0</button>
-                <button class="glass-btn calc-btn" onclick="calcInput('.')">.</button>
-                <button class="glass-btn calc-btn action-btn" onclick="calcResult()">=</button>
+                <span>Explorer</span>
+            </div>
+            <div class="desktop-icon" onclick="window.openApp('lynotes')">
+                <div class="icon-svg">
+                    <svg viewBox="0 0 24 24" width="30" height="30" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                </div>
+                <span>Notizen</span>
+            </div>
+            <div class="desktop-icon" onclick="window.openApp('lypixel')">
+                <div class="icon-svg">
+                    <svg viewBox="0 0 24 24" width="34" height="34" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                </div>
+                <span>LyPixel</span>
+            </div>
+            <div class="desktop-icon" onclick="window.openApp('lycalc')">
+                <div class="icon-svg">
+                    <svg viewBox="0 0 24 24" width="34" height="34" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><line x1="9" y1="9" x2="15" y2="9"></line><line x1="9" y1="13" x2="15" y2="13"></line><line x1="9" y1="17" x2="15" y2="17"></line><line x1="12" y1="9" x2="12" y2="17"></line></svg>
+                </div>
+                <span>Rechner</span>
+            </div>
+            <div class="desktop-icon" onclick="window.openApp('lyterminal')">
+                <div class="icon-svg">
+                    <svg viewBox="0 0 24 24" width="30" height="30" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+                </div>
+                <span>Terminal</span>
+            </div>
+            <div class="desktop-icon" onclick="window.openApp('lyttt')">
+                <div class="icon-svg">
+                    <svg viewBox="0 0 24 24" width="30" height="30" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="9" x2="20" y2="9"></line><line x1="4" y1="15" x2="20" y2="15"></line><line x1="10" y1="3" x2="8" y2="21"></line><line x1="16" y1="3" x2="14" y2="21"></line></svg>
+                </div>
+                <span>TicTacToe</span>
+            </div>
+            <div class="desktop-icon" onclick="window.openApp('snake')">
+                <div class="icon-svg">
+                    <svg viewBox="0 0 24 24" width="34" height="34" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 1.5 2 2.5 3.5 3 2.5 1 4.5 3 4 6-.273 1.636-1 3-2.5 3.5a3 3 0 0 1-3 0c-1.5-.5-1.5-1.5-2.5-1.5-1 0-1 1-2.5 1.5z"></path><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" stroke-dasharray="3 3"></path></svg>
+                </div>
+                <span>Snake</span>
+            </div>
+            <div class="desktop-icon" onclick="window.openApp('lysettings')">
+                <div class="icon-svg">
+                    <svg viewBox="0 0 24 24" width="30" height="30" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                </div>
+                <span>Optionen</span>
             </div>
         </div>
-        <div class="vision-handle"></div>
-    </div>
 
-    <div class="window glass-panel" id="tictactoe" style="width: 350px; height: 420px; left: 350px; top: 100px;">
-        <div class="window-header">
-            <div class="controls"><div class="btn btn-close" onclick="closeApp('tictactoe')"></div></div>
-            <div class="title">TicTacToe</div>
-        </div>
-        <div class="window-content">
-            <div class="ttt-mode-selector">
-                <button class="glass-btn active-mode" id="btn-pvp" onclick="setTTTMode('pvp')">1 vs 1</button>
-                <button class="glass-btn" id="btn-pvc" onclick="setTTTMode('pvc')">vs CPU</button>
+        <div id="lyexplorer" class="window glass-panel" style="width: 680px; height: 440px; left: 80px; top: 90px;">
+            <div class="window-header">
+                <div class="controls"><div class="btn btn-close" onclick="window.closeApp('lyexplorer')"></div></div>
+                <div class="title">Datei-Explorer</div>
             </div>
-            <div class="tictactoe-grid" id="tic-grid"></div>
-        </div>
-        <div class="vision-handle"></div>
-    </div>
-
-    <div class="window glass-panel" id="snake" style="width: 450px; height: 550px; left: 400px; top: 120px;">
-        <div class="window-header">
-            <div class="controls"><div class="btn btn-close" onclick="closeApp('snake')"></div></div>
-            <div class="title">Snake</div>
-        </div>
-        <div class="window-content" style="align-items: center;">
-            <div class="snake-score-label" id="snake-score">Score: 0</div>
-            <div class="canvas-container">
-                <canvas id="snake-canvas" width="400" height="400"></canvas>
+            <div class="window-content" style="padding:0;">
+                <div class="explorer-layout">
+                    <div class="explorer-sidebar">
+                        <div class="explorer-tab">Kategorien</div>
+                        <div id="sidebar-notes" class="sidebar-item active" onclick="window.switchExplorerFolder('notes')"><svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline></svg> Notizen</div>
+                        <div id="sidebar-images" class="sidebar-item" onclick="window.switchExplorerFolder('bilder')"><svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg> Bilder</div>
+                    </div>
+                    <div class="explorer-main-wrapper">
+                        <div class="explorer-nav-bar">
+                            <span class="nav-arrow">◀</span><span class="nav-arrow">▶</span>
+                            <div class="address-bar" id="explorer-address">C:\LyraSystem\Notizen</div>
+                        </div>
+                        <div class="explorer-main" id="explorer-list"></div>
+                    </div>
+                </div>
             </div>
-            <div class="snake-menu-overlay" id="snake-overlay">
-                <button class="snake-action-btn" id="snake-start-btn" onclick="startSnakeCountdown()">SPIEL STARTEN</button>
-                <div id="snake-countdown" style="display: none; font-size: 60px; font-weight: bold; color: white;">3</div>
+            <div class="vision-handle"></div>
+        </div>
+
+        <div id="lynotes" class="window glass-panel" style="width: 520px; height: 420px; left: 140px; top: 110px;">
+            <div class="window-header">
+                <div class="controls"><div class="btn btn-close" onclick="window.closeApp('lynotes')"></div></div>
+                <div class="title">Notizblock</div>
+            </div>
+            <div class="window-content">
+                <div class="notes-layout">
+                    <input type="hidden" id="note-id">
+                    <div class="notes-toolbar">
+                        <input type="text" id="note-title" class="note-title-input" placeholder="Titel der Notiz...">
+                        <button class="glass-btn note-save-btn" onclick="window.saveNote()">Speichern</button>
+                        <button class="glass-btn" style="padding:0 12px; border-radius:8px;" onclick="window.createNewNote()">Neu</button>
+                    </div>
+                    <textarea id="note-content" class="glass-input" placeholder="Schreibe hier deine Gedanken..."></textarea>
+                </div>
+            </div>
+            <div class="vision-handle"></div>
+        </div>
+
+        <div id="lypixel" class="window glass-panel" style="width: 520px; height: 580px; left: 200px; top: 70px;">
+            <div class="window-header">
+                <div class="controls"><div class="btn btn-close" onclick="window.closeApp('lypixel')"></div></div>
+                <div class="title">LyPixel</div>
+            </div>
+            <div class="window-content" style="padding:15px; display:flex; flex-direction:column; gap:12px;">
+                <div class="pixel-toolbar">
+                    <button id="tool-pencil" class="glass-btn pixel-tool-btn active-mode" onclick="window.setPixelTool('pencil')"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg></button>
+                    <button id="tool-eraser" class="glass-btn pixel-tool-btn" onclick="window.setPixelTool('eraser')"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="m7 21-4.3-4.3c-1-1-1-2.5 0-3.4l9.6-9.6c1-1 2.5-1 3.4 0l5.6 5.6c1 1 1 2.5 0 3.4L13 21"></path><path d="M22 21H7"></path><path d="m5 11 9 9"></path></svg></button>
+                    <button id="tool-bucket" class="glass-btn pixel-tool-btn" onclick="window.setPixelTool('bucket')"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="m19 11-8-8-8.6 8.6a2 2 0 0 0 0 2.8l5.2 5.2c.8.8 2 .8 2.8 0L19 11Z"></path><path d="m5 2 5 5"></path><path d="M2 13h15"></path><path d="M22 20a2 2 0 1 1-4 0c0-1.6 1.7-2.4 2-4 .3 1.6 2 2.4 2 4Z"></path></svg></button>
+                    <input type="color" id="pixel-color-picker" value="#818cf8" onchange="window.updatePixelColor(this.value)">
+                    <button class="glass-btn danger-btn" style="padding:0 10px; border-radius:8px; font-size:12px;" onclick="window.clearPixelGrid()">Leeren</button>
+                    <button class="glass-btn action-btn note-save-btn" style="margin-left:auto; height:34px;" onclick="window.savePixelArt()">In Bilder sichern</button>
+                </div>
+                <div class="pixel-grid-container">
+                    <div id="pixel-canvas-grid" class="pixel-matrix"></div>
+                </div>
+            </div>
+            <div class="vision-handle"></div>
+        </div>
+
+        <div id="lycalc" class="window glass-panel" style="width: 320px; height: 440px; left: 400px; top: 150px;">
+            <div class="window-header">
+                <div class="controls"><div class="btn btn-close" onclick="window.closeApp('lycalc')"></div></div>
+                <div class="title">Taschenrechner</div>
+            </div>
+            <div class="window-content calc-bg" style="padding: 12px;">
+                <div class="calc-display" id="calc-display">0</div>
+                <div class="calc-grid">
+                    <button class="glass-btn calc-btn danger-btn" onclick="window.calcClear()">C</button>
+                    <button class="glass-btn calc-btn special-btn" onclick="window.calcInput('(')">(</button>
+                    <button class="glass-btn calc-btn special-btn" onclick="window.calcInput(')')">)</button>
+                    <button class="glass-btn calc-btn special-btn" onclick="window.calcInput('/')">/</button>
+                    
+                    <button class="glass-btn calc-btn" onclick="window.calcInput('7')">7</button>
+                    <button class="glass-btn calc-btn" onclick="window.calcInput('8')">8</button>
+                    <button class="glass-btn calc-btn" onclick="window.calcInput('9')">9</button>
+                    <button class="glass-btn calc-btn special-btn" onclick="window.calcInput('*')">*</button>
+                    
+                    <button class="glass-btn calc-btn" onclick="window.calcInput('4')">4</button>
+                    <button class="glass-btn calc-btn" onclick="window.calcInput('5')">5</button>
+                    <button class="glass-btn calc-btn" onclick="window.calcInput('6')">6</button>
+                    <button class="glass-btn calc-btn special-btn" onclick="window.calcInput('-')">-</button>
+                    
+                    <button class="glass-btn calc-btn" onclick="window.calcInput('1')">1</button>
+                    <button class="glass-btn calc-btn" onclick="window.calcInput('2')">2</button>
+                    <button class="glass-btn calc-btn" onclick="window.calcInput('3')">3</button>
+                    <button class="glass-btn calc-btn special-btn" onclick="window.calcInput('+')">+</button>
+                    
+                    <button class="glass-btn calc-btn" onclick="window.calcInput('0')">0</button>
+                    <button class="glass-btn calc-btn" onclick="window.calcInput('.')">.</button>
+                    <button class="glass-btn calc-btn action-btn" style="grid-column: span 2;" onclick="window.calcResult()">=</button>
+                </div>
+            </div>
+            <div class="vision-handle"></div>
+        </div>
+
+        <div id="lyterminal" class="window glass-panel" style="width: 600px; height: 380px; left: 220px; top: 180px;">
+            <div class="window-header">
+                <div class="controls"><div class="btn btn-close" onclick="window.closeApp('lyterminal')"></div></div>
+                <div class="title">System Terminal</div>
+            </div>
+            <div class="window-content" style="background: rgba(5,5,8,0.75);">
+                <div class="terminal-body" id="terminal-output" style="flex:1; overflow-y:auto;">Lyra 3 loaded.<br>Tippe 'help' für Befehle.</div>
+                <div style="display:flex; align-items:center; padding: 5px 10px; background:rgba(0,0,0,0.3); border-radius:6px;">
+                    <span style="color:#818cf8; font-family:monospace; margin-right:8px;">lyra@admin:~$</span>
+                    <input type="text" id="term-input" style="flex:1; background:transparent; border:none; color:#fff; font-family:monospace; outline:none; font-size:15px;">
+                </div>
+            </div>
+            <div class="vision-handle"></div>
+        </div>
+
+        <div id="lyttt" class="window glass-panel" style="width: 350px; height: 420px; left: 450px; top: 80px;">
+            <div class="window-header">
+                <div class="controls"><div class="btn btn-close" onclick="window.closeApp('lyttt')"></div></div>
+                <div class="title">Tic Tac Toe</div>
+            </div>
+            <div class="window-content" style="padding:15px;">
+                <div class="ttt-mode-selector">
+                    <button id="btn-pvp" class="glass-btn active-mode" onclick="window.setTTTMode('pvp')">Spieler vs Spieler</button>
+                    <button id="btn-pvc" class="glass-btn" onclick="window.setTTTMode('pvc')">Bot Match</button>
+                </div>
+                <div class="tictactoe-grid" id="tic-grid"></div>
+            </div>
+            <div class="vision-handle"></div>
+        </div>
+
+        <div id="snake" class="window glass-panel" style="width: 440px; height: 510px; left: 310px; top: 100px;">
+            <div class="window-header">
+                <div class="controls"><div class="btn btn-close" onclick="window.closeApp('snake')"></div></div>
+                <div class="title">Core Snake Engine</div>
+            </div>
+            <div class="window-content" style="align-items: center; justify-content: center;">
+                <div class="snake-score-label" id="snake-score">Score: 0</div>
+                <div class="canvas-container">
+                    <canvas id="snake-canvas" width="400" height="400"></canvas>
+                </div>
+                <div id="snake-overlay" class="snake-menu-overlay">
+                    <div id="snake-countdown" style="font-size: 48px; font-weight: bold; color: #4ade80; display: none;">3</div>
+                    <button id="snake-start-btn" class="glass-btn snake-action-btn" onclick="window.startSnakeCountdown()">Starten</button>
+                </div>
+            </div>
+            <div class="vision-handle"></div>
+        </div>
+
+        <div id="lysettings" class="window glass-panel" style="width: 400px; height: 450px; left: 280px; top: 140px;">
+            <div class="window-header">
+                <div class="controls"><div class="btn btn-close" onclick="window.closeApp('lysettings')"></div></div>
+                <div class="title">Optionen & Anpassung</div>
+            </div>
+            <div class="window-content settings-content">
+                <h3>System Akzentfarbe</h3>
+                <div class="color-grid">
+                    <div class="color-btn" style="background:#818cf8;" onclick="window.changeBg('linear-gradient(-45deg, #090314, #120b2e)', '#818cf8', 'rgba(129, 140, 248, 0.45)')"></div>
+                    <div class="color-btn" style="background:#10b981;" onclick="window.changeBg('linear-gradient(-45deg, #021a11, #082e22)', '#10b981', 'rgba(16, 185, 129, 0.45)')"></div>
+                    <div class="color-btn" style="background:#f43f5e;" onclick="window.changeBg('linear-gradient(-45deg, #22030b, #3b0716)', '#f43f5e', 'rgba(244, 63, 94, 0.45)')"></div>
+                    <div class="color-btn" style="background:#f59e0b;" onclick="window.changeBg('linear-gradient(-45deg, #241201, #452203)', '#f59e0b', 'rgba(245, 158, 11, 0.45)')"></div>
+                    <div class="color-btn" style="background:#06b6d4;" onclick="window.changeBg('linear-gradient(-45deg, #01161e, #032d3d)', '#06b6d4', 'rgba(6, 182, 212, 0.45)')"></div>
+                </div>
+                <h3>Zeiger Konfiguration</h3>
+                <div class="color-grid">
+                    <button id="cursor-circle-btn" class="glass-btn active-mode" style="padding:6px 15px; border-radius:8px; font-size:13px;" onclick="window.setCursorType('circle')">Kreis</button>
+                    <button id="cursor-cross-btn" class="glass-btn" style="padding:6px 15px; border-radius:8px; font-size:13px;" onclick="window.setCursorType('cross')">Kreuz</button>
+                </div>
+                <div class="color-grid" style="margin-top: 10px;">
+                    <div class="color-btn" style="background:#ffffff;" onclick="window.changeCursorColor('#ffffff')"></div>
+                    <div class="color-btn" style="background:#818cf8;" onclick="window.changeCursorColor('#818cf8')"></div>
+                    <div class="color-btn" style="background:#4ade80;" onclick="window.changeCursorColor('#4ade80')"></div>
+                    <div class="color-btn" style="background:#f87171;" onclick="window.changeCursorColor('#f87171')"></div>
+                </div>
+            </div>
+            <div class="vision-handle"></div>
+        </div>
+
+        <div id="explorer-context-menu" class="glass-panel floating-ctx-menu">
+            <button class="ctx-item-btn" id="ctx-btn-open"><svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px; vertical-align:-2px;"><path d="m6 14 1.45-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.93a2 2 0 0 1 1.66.9l.82 1.2a2 2 0 0 0 1.66.9H18a2 2 0 0 1 2 2v2"></path></svg>Öffnen</button>
+            <button class="ctx-item-btn danger-ctx-btn" id="ctx-btn-delete"><svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px; vertical-align:-2px;"><path d="M3 6h18"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>Löschen</button>
+        </div>
+
+        <div id="os-dialog-overlay" class="dialog-overlay" style="display: none;">
+            <div class="os-dialog glass-panel">
+                <div id="dialog-title" class="dialog-title">Systemmeldung</div>
+                <div id="dialog-content" class="dialog-content">Nachricht</div>
+                <button id="dialog-ok" class="glass-btn dialog-btn action-btn">Verstanden</button>
             </div>
         </div>
-        <div class="vision-handle"></div>
-    </div>
 
-    <div class="dialog-overlay" id="os-dialog-overlay" style="display: none;">
-        <div class="os-dialog glass-panel">
-            <div class="dialog-title" id="dialog-title">System Hinweis</div>
-            <div class="dialog-content" id="dialog-content">Vorgang abgeschlossen.</div>
-            <button class="glass-btn dialog-btn" id="dialog-ok">OK</button>
+        <button class="logout-btn glass-btn" onclick="window.logoutOS()"><svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg></button>
+
+        <div class="dock">
+            <div class="dock-container">
+                <div class="app-tile" onclick="window.toggleApp('lysettings')" title="Optionen">
+                    <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                </div>
+                <div class="app-tile" onclick="window.toggleApp('lyexplorer')" title="Explorer">
+                    <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+                </div>
+                <div class="app-tile" onclick="window.toggleApp('lycalc')" title="Rechner">
+                    <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="2" fill="none"><rect x="4" y="4" width="16" height="16" rx="2"></rect><line x1="9" y1="9" x2="15" y2="9"></line><line x1="9" y1="13" x2="15" y2="13"></line><line x1="9" y1="17" x2="15" y2="17"></line><line x1="12" y1="9" x2="12" y2="17"></line></svg>
+                </div>
+                <div class="app-tile" onclick="window.toggleApp('lyterminal')" title="Terminal">
+                    <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+                </div>
+            </div>
         </div>
+
     </div>
 
-    <button class="glass-btn logout-btn" onclick="logoutOS()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="24" height="24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-    </button>
-</div>
-<script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
