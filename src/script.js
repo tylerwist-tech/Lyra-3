@@ -1,4 +1,4 @@
-// === AUDIO ENGINE ===
+// === DEEPER & CLEANER AUDIO ENGINE ===
 window.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
 window.playSound = function(type) {
@@ -7,23 +7,37 @@ window.playSound = function(type) {
     const gainNode = window.audioCtx.createGain();
     const filter = window.audioCtx.createBiquadFilter();
 
-    filter.type = 'lowpass'; filter.frequency.value = 600;
-    osc.connect(filter); filter.connect(gainNode); gainNode.connect(window.audioCtx.destination);
+    filter.type = 'lowpass'; 
+    filter.frequency.value = 350; 
+    
+    osc.connect(filter); 
+    filter.connect(gainNode); 
+    gainNode.connect(window.audioCtx.destination);
 
     const now = window.audioCtx.currentTime;
 
     if(type === 'open') {
-        osc.type = 'sine'; osc.frequency.setValueAtTime(250, now); osc.frequency.exponentialRampToValueAtTime(500, now + 0.15);
-        gainNode.gain.setValueAtTime(0, now); gainNode.gain.linearRampToValueAtTime(0.2, now + 0.05); gainNode.gain.linearRampToValueAtTime(0, now + 0.2);
+        osc.type = 'sine'; 
+        osc.frequency.setValueAtTime(130, now); 
+        osc.frequency.exponentialRampToValueAtTime(260, now + 0.18);
+        gainNode.gain.setValueAtTime(0, now); 
+        gainNode.gain.linearRampToValueAtTime(0.25, now + 0.04); 
+        gainNode.gain.linearRampToValueAtTime(0, now + 0.2);
         osc.start(now); osc.stop(now + 0.2);
     } else if (type === 'close') {
-        osc.type = 'sine'; osc.frequency.setValueAtTime(400, now); osc.frequency.exponentialRampToValueAtTime(200, now + 0.15);
-        gainNode.gain.setValueAtTime(0, now); gainNode.gain.linearRampToValueAtTime(0.15, now + 0.05); gainNode.gain.linearRampToValueAtTime(0, now + 0.2);
+        osc.type = 'sine'; 
+        osc.frequency.setValueAtTime(220, now); 
+        osc.frequency.exponentialRampToValueAtTime(110, now + 0.18);
+        gainNode.gain.setValueAtTime(0, now); 
+        gainNode.gain.linearRampToValueAtTime(0.2, now + 0.04); 
+        gainNode.gain.linearRampToValueAtTime(0, now + 0.2);
         osc.start(now); osc.stop(now + 0.2);
     } else if (type === 'click') {
-        osc.type = 'triangle'; osc.frequency.setValueAtTime(350, now);
-        gainNode.gain.setValueAtTime(0.1, now); gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
-        osc.start(now); osc.stop(now + 0.05);
+        osc.type = 'triangle'; 
+        osc.frequency.setValueAtTime(160, now);
+        gainNode.gain.setValueAtTime(0.12, now); 
+        gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+        osc.start(now); osc.stop(now + 0.04);
     }
 };
 
@@ -39,8 +53,8 @@ document.addEventListener('mousemove', (e) => {
 });
 
 function animateCursor() {
-    outX += (mouseX - outX) * 0.08; 
-    outY += (mouseY - outY) * 0.08;
+    outX += (mouseX - outX) * 0.1; 
+    outY += (mouseY - outY) * 0.1;
     if(cursorOutline) { cursorOutline.style.left = outX + 'px'; cursorOutline.style.top = outY + 'px'; }
     requestAnimationFrame(animateCursor);
 }
@@ -69,7 +83,7 @@ window.changeBg = function(gradient, accentHex, glowRGBA) {
     const bgLayer = document.getElementById('desktop-bg-layer');
     if(bgLayer) {
         bgLayer.style.background = gradient;
-        // Fix: Size muss nach dem Neusetzen des Backgrounds wieder hergestellt werden
+        bgLayer.style.backgroundImage = gradient;
         bgLayer.style.backgroundSize = "400% 400%";
     }
     document.documentElement.style.setProperty('--accent-color', accentHex);
@@ -153,20 +167,21 @@ window.openApp = function(appId) {
 
 window.closeApp = function(appId) {
     window.playSound('close');
-    document.getElementById(appId).classList.remove('active');
+    const app = document.getElementById(appId);
+    if(app) app.classList.remove('active');
 };
 
 // DRAG SYSTEM
 let activeDragWindow = null;
 let dragOffsetX = 0, dragOffsetY = 0;
 
-document.querySelectorAll('.vision-handle').forEach(handle => {
-    handle.addEventListener('mousedown', (e) => {
-        e.preventDefault(); e.stopPropagation();
-        const win = handle.closest('.window');
+document.querySelectorAll('.window-header').forEach(header => {
+    header.addEventListener('mousedown', (e) => {
+        if(e.target.classList.contains('btn') || e.target.tagName.toLowerCase() === 'input' || e.target.tagName.toLowerCase() === 'button') return; 
+        e.preventDefault();
+        const win = header.closest('.window');
         window.highestZIndex++; win.style.zIndex = window.highestZIndex;
         activeDragWindow = win;
-        handle.classList.add('dragging');
         
         const rect = win.getBoundingClientRect();
         dragOffsetX = e.clientX - rect.left;
@@ -181,10 +196,7 @@ document.addEventListener('mousemove', (e) => {
 });
 
 document.addEventListener('mouseup', () => {
-    if (activeDragWindow) {
-        activeDragWindow.querySelector('.vision-handle').classList.remove('dragging');
-        activeDragWindow = null;
-    }
+    if (activeDragWindow) activeDragWindow = null;
 });
 
 function renderWindows() {
@@ -192,7 +204,7 @@ function renderWindows() {
         if (win.dataset.targetX !== undefined) {
             let tX = parseFloat(win.dataset.targetX); let tY = parseFloat(win.dataset.targetY);
             let cX = parseFloat(win.dataset.currentX); let cY = parseFloat(win.dataset.currentY);
-            cX += (tX - cX) * 0.15; cY += (tY - cY) * 0.15;
+            cX += (tX - cX) * 0.2; cY += (tY - cY) * 0.2;
             win.dataset.currentX = cX; win.dataset.currentY = cY;
             win.style.left = cX + 'px'; win.style.top = cY + 'px';
         }
@@ -212,7 +224,7 @@ if (termInput) {
             termOutput.innerHTML += `<br><span style="color:#fff">lyra@admin:~$</span> ${val}`;
             
             if (val === 'help') termOutput.innerHTML += `<br>Verfügbare Befehle: help, clear, echo [text], date, whoami`;
-            else if (val === 'clear') termOutput.innerHTML = `Lyra 3 Core loaded.<br>Tippe 'help' für Befehle.`;
+            else if (val === 'clear') termOutput.innerHTML = `Lyra 3 loaded.<br>Tippe 'help' für Befehle.`;
             else if (val === 'date') termOutput.innerHTML += `<br>${new Date().toLocaleString('de-DE')}`;
             else if (val === 'whoami') termOutput.innerHTML += `<br>Du bist als 'admin' angemeldet.`;
             else if (val.startsWith('echo ')) termOutput.innerHTML += `<br>${val.substring(5)}`;
@@ -224,9 +236,149 @@ if (termInput) {
     });
 }
 
-// === NOTES & EXPLORER ===
+// === FILE EXPLORER STORAGE AND ACTIVE CATEGORY ===
 let savedNotes = JSON.parse(localStorage.getItem('lyraNotes')) || [];
+let savedImages = JSON.parse(localStorage.getItem('lyraImages')) || [];
+let currentExplorerFolder = 'notes'; // 'notes' oder 'bilder'
 
+window.switchExplorerFolder = function(folder) {
+    window.playSound('click');
+    currentExplorerFolder = folder;
+    document.getElementById('sidebar-notes').classList.remove('active');
+    document.getElementById('sidebar-images').classList.remove('active');
+    
+    const addr = document.getElementById('explorer-address');
+    if(folder === 'notes') {
+        document.getElementById('sidebar-notes').classList.add('active');
+        addr.innerText = "C:\\\\LyraSystem\\\\Notizen";
+    } else {
+        document.getElementById('sidebar-images').classList.add('active');
+        addr.innerText = "C:\\\\LyraSystem\\\\Bilder";
+    }
+    renderExplorer();
+};
+
+// === SCHWEBENDES MENU EVENT LOGIC (LONG PRESS & HOLD) ===
+let contextMenuTarget = null; // { type: 'notes'/'bilder', id: '...' }
+let holdTimer = null;
+const ctxMenuEl = document.getElementById('explorer-context-menu');
+
+function attachFileContextEvents(element, type, id) {
+    let wasHeld = false;
+    
+    element.addEventListener('mousedown', (e) => {
+        if(e.button !== 0) return; // Nur linker Mausklick
+        wasHeld = false;
+        holdTimer = setTimeout(() => {
+            wasHeld = true;
+            window.playSound('click');
+            contextMenuTarget = { type, id };
+            showFloatingMenu(e.clientX, e.clientY);
+        }, 550); // 550ms gedrückt halten löst schwebendes Menü aus
+    });
+
+    element.addEventListener('mouseup', () => {
+        clearTimeout(holdTimer);
+    });
+
+    element.addEventListener('mouseleave', () => {
+        clearTimeout(holdTimer);
+    });
+
+    element.addEventListener('click', (e) => {
+        if(wasHeld) {
+            e.preventDefault();
+            e.stopPropagation();
+            return;
+        }
+        // Normaler Klick öffnet Datei direkt
+        if(type === 'notes') {
+            window.openNote(id);
+        } else {
+            window.openPixelArtItem(id);
+        }
+    });
+}
+
+function showFloatingMenu(x, y) {
+    if(!ctxMenuEl) return;
+    ctxMenuEl.style.left = (x + 10) + 'px';
+    ctxMenuEl.style.top = (y + 5) + 'px';
+    ctxMenuEl.style.display = 'flex';
+}
+
+// Menü schließen wenn man irgendwo anders hinklickt
+document.addEventListener('mousedown', (e) => {
+    if(ctxMenuEl && !ctxMenuEl.contains(e.target) && holdTimer === null) {
+        ctxMenuEl.style.display = 'none';
+    }
+});
+
+// Context Menu Action Handlers
+document.getElementById('ctx-btn-open').addEventListener('click', () => {
+    if(!contextMenuTarget) return;
+    ctxMenuEl.style.display = 'none';
+    if(contextMenuTarget.type === 'notes') {
+        window.openNote(contextMenuTarget.id);
+    } else {
+        window.openPixelArtItem(contextMenuTarget.id);
+    }
+});
+
+document.getElementById('ctx-btn-delete').addEventListener('click', () => {
+    if(!contextMenuTarget) return;
+    ctxMenuEl.style.display = 'none';
+    window.playSound('close');
+    
+    if(contextMenuTarget.type === 'notes') {
+        savedNotes = savedNotes.filter(n => n.id !== contextMenuTarget.id);
+        localStorage.setItem('lyraNotes', JSON.stringify(savedNotes));
+    } else {
+        savedImages = savedImages.filter(i => i.id !== contextMenuTarget.id);
+        localStorage.setItem('lyraImages', JSON.stringify(savedImages));
+    }
+    renderExplorer();
+});
+
+// === RENDER EXPLORER FUNCTION ===
+function renderExplorer() {
+    const list = document.getElementById('explorer-list');
+    if(!list) return;
+    list.innerHTML = '';
+    
+    if(currentExplorerFolder === 'notes') {
+        if(savedNotes.length === 0) {
+            list.style.display = 'flex';
+            list.innerHTML = '<div style="color: rgba(255,255,255,0.3); margin: auto; font-size: 13px;">Dieser Ordner ist leer.</div>';
+            return;
+        }
+        list.style.display = 'grid'; 
+        savedNotes.forEach(note => {
+            let div = document.createElement('div');
+            div.className = 'explorer-item';
+            div.innerHTML = `<div class="file-icon"><svg viewBox="0 0 24 24" width="34" height="34" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg></div> <span>${note.title}</span>`;
+            attachFileContextEvents(div, 'notes', note.id);
+            list.appendChild(div);
+        });
+    } else {
+        // Bilder-Ordner
+        if(savedImages.length === 0) {
+            list.style.display = 'flex';
+            list.innerHTML = '<div style="color: rgba(255,255,255,0.3); margin: auto; font-size: 13px;">Keine Bilder vorhanden.</div>';
+            return;
+        }
+        list.style.display = 'grid';
+        savedImages.forEach(img => {
+            let div = document.createElement('div');
+            div.className = 'explorer-item';
+            div.innerHTML = `<div class="file-icon" style="color: var(--accent-color)"><svg viewBox="0 0 24 24" width="34" height="34" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg></div> <span>${img.title}</span>`;
+            attachFileContextEvents(div, 'bilder', img.id);
+            list.appendChild(div);
+        });
+    }
+}
+
+// === NOTES LOGIC ===
 window.saveNote = function() {
     let title = document.getElementById('note-title').value.trim() || "Unbenannte Notiz";
     let content = document.getElementById('note-content').value;
@@ -234,14 +386,11 @@ window.saveNote = function() {
 
     if(!id) {
         id = "note_" + Date.now();
-        savedNotes.push({ id, title, content, date: new Date().toLocaleDateString('de-DE', {day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit'}) });
+        savedNotes.push({ id, title, content, date: new Date().toLocaleDateString('de-DE') });
         document.getElementById('note-id').value = id;
     } else {
         let note = savedNotes.find(n => n.id === id);
-        if(note) { 
-            note.title = title; note.content = content; 
-            note.date = new Date().toLocaleDateString('de-DE', {day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit'}); 
-        }
+        if(note) { note.title = title; note.content = content; }
     }
     
     localStorage.setItem('lyraNotes', JSON.stringify(savedNotes));
@@ -268,28 +417,118 @@ window.openNote = function(id) {
     }
 };
 
-function renderExplorer() {
-    const list = document.getElementById('explorer-list');
-    if(!list) return;
-    list.innerHTML = '';
-    
-    if(savedNotes.length === 0) {
-        list.style.display = 'flex';
-        list.innerHTML = '<div style="color: rgba(255,255,255,0.4); margin: auto; text-align: center;">Keine Dokumente vorhanden.</div>';
-        return;
-    }
+// === MODERN PIXEL MAL STUDIO ENGINE ===
+let currentPixelTool = 'pencil'; // 'pencil', 'eraser', 'bucket'
+let currentPixelColor = '#818cf8';
+let pixelGridData = Array(16 * 16).fill('#transparent');
+let pixelAppActiveId = null;
 
-    list.style.display = 'grid'; // Grid Layout aktivieren
-    savedNotes.forEach(note => {
-        let div = document.createElement('div');
-        div.className = 'explorer-item';
-        // Neues Grid Design
-        div.innerHTML = `<div class="file-icon">📄</div> <span>${note.title}</span>`;
-        div.onclick = () => openNote(note.id);
-        list.appendChild(div);
-    });
+function buildPixelGrid() {
+    const container = document.getElementById('pixel-canvas-grid');
+    if(!container) return;
+    container.innerHTML = '';
+    for(let i = 0; i < 256; i++) {
+        const cell = document.createElement('div');
+        cell.className = 'pixel-cell';
+        cell.style.backgroundColor = pixelGridData[i] === '#transparent' ? '' : pixelGridData[i];
+        
+        // Mouse Listeners für flüssiges Zeichnen bei gedrückter Maus
+        cell.addEventListener('mousedown', (e) => {
+            if(e.button !== 0) return;
+            window.handlePixelCellAction(i);
+        });
+        cell.addEventListener('mouseenter', (e) => {
+            if(e.buttons === 1) { // Linke Maustaste gehalten
+                window.handlePixelCellAction(i);
+            }
+        });
+        container.appendChild(cell);
+    }
 }
-renderExplorer();
+
+window.setPixelTool = function(tool) {
+    window.playSound('click');
+    currentPixelTool = tool;
+    document.querySelectorAll('.pixel-tool-btn').forEach(btn => btn.classList.remove('active-mode'));
+    document.getElementById('tool-' + tool).classList.add('active-mode');
+};
+
+window.updatePixelColor = function(val) {
+    currentPixelColor = val;
+};
+
+window.handlePixelCellAction = function(index) {
+    if(currentPixelTool === 'pencil') {
+        pixelGridData[index] = currentPixelColor;
+    } else if(currentPixelTool === 'eraser') {
+        pixelGridData[index] = '#transparent';
+    } else if(currentPixelTool === 'bucket') {
+        // Flood Fill Algorithmus für Pixel Studio
+        const targetColor = pixelGridData[index];
+        if(targetColor === currentPixelColor) return;
+        floodFillPixel(index, targetColor, currentPixelColor);
+    }
+    const cells = document.getElementById('pixel-canvas-grid').children;
+    if(cells[index]) {
+        cells[index].style.backgroundColor = pixelGridData[index] === '#transparent' ? '' : pixelGridData[index];
+    }
+};
+
+function floodFillPixel(startIdx, targetColor, replacementColor) {
+    let queue = [startIdx];
+    let visited = new Set();
+    while(queue.length > 0) {
+        let idx = queue.shift();
+        if(visited.has(idx)) continue;
+        visited.add(idx);
+        if(pixelGridData[idx] === targetColor) {
+            pixelGridData[idx] = replacementColor;
+            const cells = document.getElementById('pixel-canvas-grid').children;
+            if(cells[idx]) cells[idx].style.backgroundColor = replacementColor === '#transparent' ? '' : replacementColor;
+            
+            let x = idx % 16;
+            let y = Math.floor(idx / 16);
+            if(x > 0) queue.push(idx - 1);
+            if(x < 15) queue.push(idx + 1);
+            if(y > 0) queue.push(idx - 16);
+            if(y < 15) queue.push(idx + 16);
+        }
+    }
+}
+
+window.clearPixelGrid = function() {
+    window.playSound('close');
+    pixelGridData = Array(16 * 16).fill('#transparent');
+    buildPixelGrid();
+};
+
+window.savePixelArt = function() {
+    window.playSound('open');
+    let title = prompt("Name für dieses Pixel-Kunstwerk:", "Mein Kunstwerk");
+    if(!title || title.trim() === "") title = "Unbenanntes Bild";
+    
+    const newImg = {
+        id: "img_" + Date.now(),
+        title: title.trim(),
+        grid: [...pixelGridData]
+    };
+    savedImages.push(newImg);
+    localStorage.setItem('lyraImages', JSON.stringify(savedImages));
+    window.showOSDialog("Studio", "Bild erfolgreich im Explorer unter 'Bilder' gespeichert.");
+    renderExplorer();
+};
+
+window.openPixelArtItem = function(id) {
+    let img = savedImages.find(i => i.id === id);
+    if(img) {
+        pixelGridData = [...img.grid];
+        buildPixelGrid();
+        window.openApp('lypixel');
+    }
+};
+
+// Initialisiere Grid bei App-Start
+buildPixelGrid();
 
 // === TIC TAC TOE ===
 let tttBoard = ["","","","","","","","",""];
@@ -370,7 +609,7 @@ function checkTTTWin() {
 }
 initTTT();
 
-// === SNAKE ===
+// === SNAKE ENGINE ===
 const sCanvas = document.getElementById('snake-canvas');
 const sCtx = sCanvas ? sCanvas.getContext('2d') : null;
 let sSnake = [{x: 200, y: 200}];
@@ -382,9 +621,9 @@ let changingDirection = false;
 
 function drawCyberGrid() {
     if(!sCtx) return;
-    sCtx.fillStyle = '#07070c';
+    sCtx.fillStyle = '#06060a';
     sCtx.fillRect(0, 0, 400, 400);
-    sCtx.strokeStyle = 'rgba(255, 255, 255, 0.02)';
+    sCtx.strokeStyle = 'rgba(255, 255, 255, 0.015)';
     sCtx.lineWidth = 1;
     for(let i = 0; i < 400; i += 20) {
         sCtx.beginPath(); sCtx.moveTo(i, 0); sCtx.lineTo(i, 400); sCtx.stroke();
@@ -424,15 +663,16 @@ function initSnakeGame() {
             if(!document.getElementById('snake').classList.contains('active')) return;
             if(changingDirection) return;
             
-            if(e.key === 'ArrowUp' && dy === 0) { dx=0; dy=-20; changingDirection = true; e.preventDefault(); }
-            if(e.key === 'ArrowDown' && dy === 0) { dx=0; dy=20; changingDirection = true; e.preventDefault(); }
-            if(e.key === 'ArrowLeft' && dx === 0) { dx=-20; dy=0; changingDirection = true; e.preventDefault(); }
-            if(e.key === 'ArrowRight' && dx === 0) { dx=20; dy=0; changingDirection = true; e.preventDefault(); }
+            const key = e.key.toLowerCase();
+            if((e.key === 'ArrowUp' || key === 'w') && dy === 0) { dx=0; dy=-20; changingDirection = true; e.preventDefault(); }
+            if((e.key === 'ArrowDown' || key === 's') && dy === 0) { dx=0; dy=20; changingDirection = true; e.preventDefault(); }
+            if((e.key === 'ArrowLeft' || key === 'a') && dx === 0) { dx=-20; dy=0; changingDirection = true; e.preventDefault(); }
+            if((e.key === 'ArrowRight' || key === 'd') && dx === 0) { dx=20; dy=0; changingDirection = true; e.preventDefault(); }
         });
         window.snakeKeyBound = true;
     }
     if(sInterval) clearInterval(sInterval);
-    sInterval = setInterval(updateSnake, 110);
+    sInterval = setInterval(updateSnake, 145); 
 }
 
 function updateSnake() {
@@ -480,7 +720,7 @@ function generateFoodLocation() {
 setInterval(() => {
     const d = new Date();
     const clockEl = document.getElementById('clock');
-    if(clockEl) clockEl.innerText = d.toLocaleTimeString('de-DE', {hour: '2-digit', minute:'2-digit'});
+    if(clockEl) clockEl.innerText = d.toLocaleTimeString('de-DE', {hour: '2-digit', minute:'2-digit', second:'2-digit'});
 }, 1000);
 
 // === CALCULATOR ===
@@ -502,10 +742,13 @@ window.calcResult = function() {
             document.getElementById('calc-display').innerText = calcStr; 
             window.playSound('open'); 
         } else {
-            throw new Error("Invalid Format");
+            throw new Error("Formatfehler");
         }
     } catch(e) { 
         document.getElementById('calc-display').innerText = "Error"; 
         calcStr = "";
     } 
 };
+
+// Initialer Aufruf für Explorer-Inhalte
+renderExplorer();
